@@ -31,9 +31,7 @@ class SawyerPushAndReachXYZEnv(MultitaskEnv, SawyerXYZEnv):
             init_puck_z=0.02,
             init_hand_xyz=(0, 0.4, 0.07),
 
-            num_resets_before_puck_reset=1,
-            num_resets_before_hand_reset=1,
-            reset_hand_with_puck=False,
+            reset_free=False,
             **kwargs
     ):
         self.quick_init(locals())
@@ -70,6 +68,7 @@ class SawyerPushAndReachXYZEnv(MultitaskEnv, SawyerXYZEnv):
         self.fixed_goal = np.array(fixed_goal)
         self._state_goal = None
 
+        self.reset_free = reset_free
         self.hide_goal_markers = hide_goal_markers
 
         self.action_space = Box(np.array([-1, -1, -1]), np.array([1, 1, 1]), dtype=np.float32)
@@ -93,8 +92,6 @@ class SawyerPushAndReachXYZEnv(MultitaskEnv, SawyerXYZEnv):
         self.init_puck_z = init_puck_z
         self.init_hand_xyz = np.array(init_hand_xyz)
         self._set_puck_xy(self.sample_puck_xy())
-        self.num_resets_before_puck_reset = num_resets_before_puck_reset
-        self.num_resets_before_hand_reset = num_resets_before_hand_reset
         self.reset_counter = 0
         self.puck_space = Box(self.puck_low, self.puck_high, dtype=np.float32)
         self.reset()
@@ -229,14 +226,13 @@ class SawyerPushAndReachXYZEnv(MultitaskEnv, SawyerXYZEnv):
         self.set_state(qpos, qvel)
 
     def reset_model(self):
-        if self.reset_counter % self.num_resets_before_hand_reset == 0:
+        if not self.reset_free:
             self._reset_hand()
-        if self.reset_counter % self.num_resets_before_puck_reset == 0:
             self._set_puck_xy(self.sample_puck_xy())
 
         if not (self.puck_space.contains(self.get_puck_pos()[:2])):
+            #check to ensure puck didn't fly away for some reason
             self._set_puck_xy(self.sample_puck_xy())
-
         goal = self.sample_goal()
         self.set_goal(goal)
         self.reset_counter += 1
