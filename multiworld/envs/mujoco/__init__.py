@@ -516,10 +516,10 @@ def register_custom_envs():
         },
         kwargs=dict(
             goal_low=(-0.1, 0.45, 0.15, 0),
-            goal_high=(0.0, 0.65, .225, 1.0472),
+            goal_high=(0.0, 0.65, .225, .728),
             hand_low=(-0.1, 0.45, 0.15),
             hand_high=(0., 0.65, .225),
-            max_angle=1.0472,
+            max_angle=.728,
             xml_path='sawyer_xyz/sawyer_door_pull_hook.xml',
             reset_free=True,
         )

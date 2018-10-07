@@ -58,11 +58,11 @@ env = SawyerDoorHookEnv(
     # max_angle=0.523599,
     # xml_path='sawyer_xyz/sawyer_door_pull_hook_30.xml',
 
-    goal_low=(-0.1, 0.4, 0.1, 0),
-    goal_high=(0.05, 0.65, .25, .93),
-    hand_low=(-0.1, 0.4, 0.1),
-    hand_high=(0.05, 0.65, .25),
-    max_angle=.93,
+    goal_low=(-0.1, 0.45, 0.15, 0),
+    goal_high=(0.0, 0.65, .225, 1.0472),
+    hand_low=(-0.1, 0.45, 0.15),
+    hand_high=(0., 0.65, .225),
+    max_angle=1.0472,
     xml_path='sawyer_xyz/sawyer_door_pull_hook.xml',
     reset_free=True,
 )
