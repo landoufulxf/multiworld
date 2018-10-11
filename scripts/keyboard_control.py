@@ -48,24 +48,32 @@ char_to_action = {
 }
 
 
-# env = SawyerPushAndReachXYEnv()
-# env = SawyerPushAndReachXYZEnv()
-env = SawyerDoorHookEnv(
-    # goal_low=(-0.1, 0.525, 0.05, 0),
-    # goal_high=(0.0, 0.65, .075, 0.523599),
-    # hand_low=(-0.1, 0.525, 0.05),
-    # hand_high=(0., 0.65, .075),
-    # max_angle=0.523599,
-    # xml_path='sawyer_xyz/sawyer_door_pull_hook_30.xml',
-
-    goal_low=(-0.1, 0.4, 0.1, 0),
-    goal_high=(0.05, 0.65, .25, .93),
-    hand_low=(-0.1, 0.4, 0.1),
-    hand_high=(0.05, 0.65, .25),
-    max_angle=.93,
-    xml_path='sawyer_xyz/sawyer_door_pull_hook.xml',
-    reset_free=True,
+env = SawyerPushAndReachXYEnv(
+    hand_low=(-0.16, 0.4, 0.05),
+    hand_high=(0.16, 0.75, 0.3),
+    puck_low=(-.4, .2),
+    puck_high=(.4, 1),
+    goal_low=(-0.15, 0.4, 0.02, -.1, .5),
+    goal_high=(0.15, 0.74, 0.02, .1, .7),
+    xml_path='sawyer_xyz/sawyer_push_puck_smaller_arena.xml',
 )
+# env = SawyerPushAndReachXYZEnv()
+# env = SawyerDoorHookEnv(
+#     # goal_low=(-0.1, 0.525, 0.05, 0),
+#     # goal_high=(0.0, 0.65, .075, 0.523599),
+#     # hand_low=(-0.1, 0.525, 0.05),
+#     # hand_high=(0., 0.65, .075),
+#     # max_angle=0.523599,
+#     # xml_path='sawyer_xyz/sawyer_door_pull_hook_30.xml',
+#
+#     goal_low=(-0.1, 0.4, 0.1, 0),
+#     goal_high=(0.05, 0.65, .25, .93),
+#     hand_low=(-0.1, 0.4, 0.1),
+#     hand_high=(0.05, 0.65, .25),
+#     max_angle=.93,
+#     xml_path='sawyer_xyz/sawyer_door_pull_hook.xml',
+#     reset_free=True,
+# )
 # env = SawyerReachXYEnv()
 # env = SawyerReachXYZEnv()
 # env = SawyerPickAndPlaceEnv()
@@ -105,7 +113,7 @@ while True:
             else:
                 action = np.zeros(10)
     obs, reward, _, info = env.step(action[:NDIM])
-    print(env.data.qpos[-1])
+    print(env.get_endeff_pos())
     env.render()
     if done:
         obs = env.reset()
